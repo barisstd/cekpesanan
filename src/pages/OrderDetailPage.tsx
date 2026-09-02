@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { PaymentStatusBadge } from "@/components/PaymentStatusBadge";
 import { ProductRow } from "@/components/ProductRow";
 import { PaymentSummaryCard } from "@/components/PaymentSummaryCard";
+import { PaymentAccountsPanel } from "@/components/PaymentAccountsPanel";
 import { Button } from "@/components/Button";
 import { formatOrderDate } from "@/lib/format";
 import type { OrderDetail } from "@/types/order";
@@ -15,6 +17,9 @@ interface OrderDetailPageProps {
 const ADMIN_WHATSAPP = import.meta.env.VITE_ADMIN_WHATSAPP || "6281234567890";
 
 export function OrderDetailPage({ order, onBack, showBack }: OrderDetailPageProps) {
+  const [showPayment, setShowPayment] = useState(false);
+  const isUnpaid = order.paymentStatus !== "LUNAS";
+
   const waMessage = encodeURIComponent(
     `Halo Admin Ijun Bookstore, saya mau tanya soal pesanan ${order.orderId} (${order.customerName}).`
   );
@@ -71,6 +76,21 @@ export function OrderDetailPage({ order, onBack, showBack }: OrderDetailPageProp
           remaining={order.remaining}
           status={order.paymentStatus}
         />
+
+        {/* Bayar Sekarang — only shown while there's a balance owing */}
+        {isUnpaid && (
+          <div className="flex flex-col gap-4">
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={() => setShowPayment((s) => !s)}
+              className="print:hidden"
+            >
+              {showPayment ? "Sembunyikan Info Transfer" : "Bayar Sekarang"}
+            </Button>
+            {showPayment && <PaymentAccountsPanel />}
+          </div>
+        )}
 
         {/* CTAs */}
         <div className="flex flex-col gap-3 pb-2 print:hidden">
