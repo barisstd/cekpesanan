@@ -4,35 +4,35 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: "#FBF6ED",
-        ink: "#2B2420",
+        paper: "#FBF5FF",
+        ink: "#332942",
         cloth: {
-          DEFAULT: "#2F4C5C",
-          light: "#3D6377",
-          dark: "#213640",
+          DEFAULT: "#7C4FB0",
+          light: "#B49BDB",
+          dark: "#5E3A8C",
         },
         marigold: {
-          DEFAULT: "#E0883E",
-          light: "#F0A868",
-          dark: "#B5692A",
+          DEFAULT: "#E2568F",
+          light: "#F7B8D3",
+          dark: "#B93A6E",
         },
         leaf: {
-          DEFAULT: "#4C7A52",
-          light: "#E7F0E4",
+          DEFAULT: "#4C9A6B",
+          light: "#E3F5EA",
         },
         amberwarn: {
-          DEFAULT: "#B8792A",
-          light: "#FBF0DD",
+          DEFAULT: "#C98A2E",
+          light: "#FDF0DC",
         },
         brick: {
-          DEFAULT: "#B14A38",
-          light: "#FAE6E1",
+          DEFAULT: "#E2543F",
+          light: "#FBE3DE",
         },
-        line: "#E3D9C6",
+        line: "#E7DFF5",
       },
       fontFamily: {
-        display: ["Fraunces", "Georgia", "serif"],
-        body: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
+        display: ["Baloo 2", "Fraunces", "Georgia", "serif"],
+        body: ["Quicksand", "Plus Jakarta Sans", "system-ui", "sans-serif"],
       },
       borderRadius: {
         card: "1.25rem",

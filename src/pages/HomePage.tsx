@@ -39,11 +39,7 @@ export function HomePage({ onSubmit, initialValue = "" }: HomePageProps) {
           <label className="mb-3 block text-sm font-medium text-ink/70">
             4 digit terakhir nomor HP
           </label>
-          <PhoneDigitInput
-            value={digits}
-            onChange={setDigits}
-            onComplete={onSubmit}
-          />
+          <PhoneDigitInput value={digits} onChange={setDigits} />
 
           <Button
             type="submit"
