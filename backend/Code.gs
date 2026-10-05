@@ -112,12 +112,20 @@ function handleDetail(body) {
   return jsonResponse({
     ok: true,
     order: Object.assign({}, summary, {
-      items: items.map((item) => ({
-        productName: item.productName,
-        price: item.price,
-        qty: item.qty,
-        subtotal: item.price * item.qty,
-      })),
+      items: items.map((item) => {
+        const price = Number(item.price);
+        const effectivePrice = effectiveUnitPrice(item);
+        const qty = Number(item.qty);
+        const hasDiscount = effectivePrice < price;
+        const shaped = {
+          productName: item.productName,
+          price: price,
+          qty: qty,
+          subtotal: effectivePrice * qty,
+        };
+        if (hasDiscount) shaped.discountPrice = effectivePrice;
+        return shaped;
+      }),
       // Payment method/date shown to the customer; no internal admin notes.
       payments: payments.map((p) => ({
         paymentId: p.paymentId,
@@ -192,7 +200,17 @@ function buildOrderSummary(order) {
   const items = getOrderItems(order.orderId);
   const payments = getOrderPayments(order.orderId);
 
-  const total = items.reduce((sum, i) => sum + Number(i.price) * Number(i.qty), 0);
+  let subtotalBeforeDiscount = 0;
+  let total = 0;
+  items.forEach((item) => {
+    const price = Number(item.price);
+    const qty = Number(item.qty);
+    const effectivePrice = effectiveUnitPrice(item);
+    subtotalBeforeDiscount += price * qty;
+    total += effectivePrice * qty;
+  });
+  const discountTotal = subtotalBeforeDiscount - total;
+
   const paid = payments.reduce((sum, p) => sum + Number(p.amount), 0);
   const remaining = total - paid;
 
@@ -203,11 +221,28 @@ function buildOrderSummary(order) {
     phoneLast4: normalizePhone(order.phone).slice(-4), // full phone NEVER leaves this function
     shippingMethod: order.shippingMethod,
     orderStatus: order.orderStatus,
+    subtotalBeforeDiscount: subtotalBeforeDiscount,
+    discountTotal: discountTotal,
     total: total,
     paid: paid,
     remaining: remaining,
     paymentStatus: paymentStatusFor(paid, remaining),
   };
+}
+
+/**
+ * The unit price to actually charge for an ORDER_ITEMS row: its
+ * discount_price column when present and a genuine discount (> 0 and
+ * < price), otherwise the regular price. Centralized here so the
+ * summary total and the itemized detail view can never disagree.
+ */
+function effectiveUnitPrice(item) {
+  const price = Number(item.price);
+  const raw = item.discountPrice;
+  if (raw === "" || raw === null || typeof raw === "undefined") return price;
+  const discountPrice = Number(raw);
+  if (isNaN(discountPrice) || discountPrice <= 0 || discountPrice >= price) return price;
+  return discountPrice;
 }
 
 function paymentStatusFor(paid, remaining) {

@@ -2,6 +2,8 @@ import { formatRupiah } from "@/lib/format";
 import type { PaymentStatus } from "@/types/order";
 
 interface PaymentSummaryCardProps {
+  subtotalBeforeDiscount: number;
+  discountTotal: number;
   total: number;
   paid: number;
   remaining: number;
@@ -14,10 +16,35 @@ const REMAINING_COLOR: Record<PaymentStatus, string> = {
   "BELUM BAYAR": "text-brick",
 };
 
-export function PaymentSummaryCard({ total, paid, remaining, status }: PaymentSummaryCardProps) {
+export function PaymentSummaryCard({
+  subtotalBeforeDiscount,
+  discountTotal,
+  total,
+  paid,
+  remaining,
+  status,
+}: PaymentSummaryCardProps) {
+  const hasDiscount = discountTotal > 0;
+
   return (
     <div className="rounded-card border border-line bg-white p-5 shadow-soft">
       <div className="space-y-2.5 text-[15px]">
+        {hasDiscount && (
+          <>
+            <div className="flex justify-between">
+              <span className="text-ink/60">Subtotal Produk</span>
+              <span className="font-medium text-ink">
+                {formatRupiah(subtotalBeforeDiscount)}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-ink/60">Diskon</span>
+              <span className="font-medium text-marigold">
+                -{formatRupiah(discountTotal)}
+              </span>
+            </div>
+          </>
+        )}
         <div className="flex justify-between">
           <span className="text-ink/60">Total Pesanan</span>
           <span className="font-medium text-ink">{formatRupiah(total)}</span>

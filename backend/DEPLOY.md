@@ -21,9 +21,19 @@ Create one Google Sheet (spreadsheet) with three tabs, named exactly:
   anything else you add is automatically never returned to the frontend.
 
 ### `ORDER_ITEMS`
-| order_id | product_name | price  | qty |
-|----------|--------------|--------|-----|
-| IJN-1042 | Seri Kisah 25 Nabi (Boardbook) | 149000 | 1 |
+| order_id | product_name | price  | qty | discount_price |
+|----------|--------------|--------|-----|----------------|
+| IJN-1042 | Seri Kisah 25 Nabi (Boardbook) | 149000 | 1 | 129000 |
+
+- `discount_price` is **optional** — leave it blank for items with no
+  discount. When filled, it must be a positive number lower than
+  `price`; it's then used as the line's unit price instead, and the
+  frontend shows the original `price` struck through next to it.
+- A blank, zero, or `discount_price >= price` value is treated the
+  same as "no discount" — the item is billed at full `price`. This
+  means a leftover value accidentally left in the column after a sale
+  ends never silently overcharges or undercharges — it just falls
+  back to full price if it stops making sense.
 
 ### `PAYMENTS`
 | payment_id | order_id | payment_date | amount | method       | status   |
@@ -86,7 +96,7 @@ a backend that can see real client IPs.
 - `phone` is read only to compute `phoneLast4` and to verify ownership
   when fetching an order's detail — the full number is discarded before
   the response is built.
-- Only the six `ORDERS` columns, the four `ORDER_ITEMS` columns, and
+- Only the six `ORDERS` columns, the five `ORDER_ITEMS` columns, and
   the six `PAYMENTS` columns above are ever read into a response. Any
   other columns you add to those sheets, or any other sheets/tabs in
   the spreadsheet, are invisible to the frontend.

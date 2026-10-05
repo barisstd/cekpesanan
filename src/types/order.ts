@@ -22,6 +22,11 @@ export interface OrderSummary {
   phoneLast4: string;
   shippingMethod: string;
   orderStatus: OrderStatus;
+  /** Sum of each item's price × qty, before any per-item discount. */
+  subtotalBeforeDiscount: number;
+  /** Total saved across all items' discounts. 0 when nothing is discounted. */
+  discountTotal: number;
+  /** Final payable amount — sum of each item's discounted subtotal. */
   total: number;
   paid: number;
   remaining: number;
@@ -31,7 +36,10 @@ export interface OrderSummary {
 export interface OrderItem {
   productName: string;
   price: number;
+  /** Discounted unit price, if this item has one. Always < price when present. */
+  discountPrice?: number;
   qty: number;
+  /** (discountPrice ?? price) × qty */
   subtotal: number;
 }
 

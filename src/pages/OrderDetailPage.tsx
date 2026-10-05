@@ -74,6 +74,8 @@ export function OrderDetailPage({ order, onBack, showBack }: OrderDetailPageProp
 
         {/* Payment summary */}
         <PaymentSummaryCard
+          subtotalBeforeDiscount={order.subtotalBeforeDiscount}
+          discountTotal={order.discountTotal}
           total={order.total}
           paid={order.paid}
           remaining={order.remaining}
