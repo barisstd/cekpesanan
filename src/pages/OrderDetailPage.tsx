@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ScreenHeader } from "@/components/ScreenHeader";
+import { ReceiptPrintHeader } from "@/components/ReceiptPrintHeader";
 import { PaymentStatusBadge } from "@/components/PaymentStatusBadge";
 import { ProductRow } from "@/components/ProductRow";
 import { PaymentSummaryCard } from "@/components/PaymentSummaryCard";
@@ -33,9 +34,11 @@ export function OrderDetailPage({ order, onBack, showBack }: OrderDetailPageProp
         <ScreenHeader title="Detail Pesanan" onBack={onBack} backLabel="Cari nomor lain" />
       )}
 
-      <div className="flex flex-col gap-5 print:gap-4">
+      <div className="flex flex-col gap-5 print:gap-3">
+        <ReceiptPrintHeader />
+
         {/* Order identity */}
-        <div className="rounded-card border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-card border border-line bg-white p-5 shadow-soft print:rounded-none print:border-dashed print:p-3 print:shadow-none">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="font-display text-xl font-semibold text-ink">{order.orderId}</p>
@@ -43,7 +46,7 @@ export function OrderDetailPage({ order, onBack, showBack }: OrderDetailPageProp
             </div>
             <PaymentStatusBadge status={order.paymentStatus} />
           </div>
-          <div className="mt-4 space-y-1 border-t border-line pt-4 text-sm">
+          <div className="mt-4 space-y-1 border-t border-line pt-4 text-sm print:mt-3 print:pt-3">
             <div className="flex justify-between">
               <span className="text-ink/50">Nama</span>
               <span className="font-medium text-ink">{order.customerName}</span>
@@ -60,7 +63,7 @@ export function OrderDetailPage({ order, onBack, showBack }: OrderDetailPageProp
         </div>
 
         {/* Product list */}
-        <div className="rounded-card border border-line bg-white p-5 shadow-soft">
+        <div className="rounded-card border border-line bg-white p-5 shadow-soft print:rounded-none print:border-dashed print:p-3 print:shadow-none">
           <p className="mb-1 text-sm font-medium text-ink/70">Produk</p>
           <div className="divide-y divide-line">
             {order.items.map((item, i) => (
@@ -88,7 +91,11 @@ export function OrderDetailPage({ order, onBack, showBack }: OrderDetailPageProp
             >
               {showPayment ? "Sembunyikan Info Transfer" : "Bayar Sekarang"}
             </Button>
-            {showPayment && <PaymentAccountsPanel />}
+            {/* Always in the DOM so it shows on a printed receipt even if
+                the customer never toggled it open on screen. */}
+            <div className={showPayment ? "block" : "hidden print:block"}>
+              <PaymentAccountsPanel />
+            </div>
           </div>
         )}
 
