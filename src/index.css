@@ -29,14 +29,14 @@
   }
 }
 
-/* Receipt-style print output. Narrow thermal-receipt width (80mm) so
+/* Receipt-style print output. Narrow thermal-receipt width (58mm) so
    the download/print renders like a struk belanja instead of a full
    A4 page — on a normal printer the browser just centers this narrow
    column with blank margins either side. */
 @media print {
   @page {
-    size: 80mm auto;
-    margin: 6mm 4mm;
+    size: 58mm auto;
+    margin: 4mm 3mm;
   }
   body {
     background: #fff;

@@ -27,8 +27,8 @@ export function PaymentSummaryCard({
   const hasDiscount = discountTotal > 0;
 
   return (
-    <div className="rounded-card border border-line bg-white p-5 shadow-soft">
-      <div className="space-y-2.5 text-[15px]">
+    <div className="rounded-card border border-line bg-white p-5 shadow-soft print:rounded-none print:border-dashed print:p-2 print:shadow-none">
+      <div className="space-y-2.5 text-[15px] print:space-y-1 print:text-[10px]">
         {hasDiscount && (
           <>
             <div className="flex justify-between">
@@ -56,18 +56,22 @@ export function PaymentSummaryCard({
       </div>
 
       <div
-        className="my-4 border-t border-dashed border-line"
+        className="my-4 border-t border-dashed border-line print:my-2"
         aria-hidden="true"
       />
 
       <div className="flex items-end justify-between">
-        <span className="text-[15px] text-ink/60">
+        <span className="text-[15px] text-ink/60 print:text-[10px]">
           {status === "LUNAS" ? "Status" : "Kekurangan"}
         </span>
         {status === "LUNAS" ? (
-          <span className="font-display text-2xl font-semibold text-leaf">Lunas ✓</span>
+          <span className="font-display text-2xl font-semibold text-leaf print:text-base">
+            Lunas ✓
+          </span>
         ) : (
-          <span className={`font-display text-3xl font-semibold ${REMAINING_COLOR[status]}`}>
+          <span
+            className={`font-display text-3xl font-semibold print:text-base ${REMAINING_COLOR[status]}`}
+          >
             {formatRupiah(remaining)}
           </span>
         )}

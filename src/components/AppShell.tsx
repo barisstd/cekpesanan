@@ -9,7 +9,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <BrandHeader />
         </div>
       </div>
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 pb-8 pt-5 print:max-w-full print:px-2 print:pb-2 print:pt-0">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 pb-8 pt-5 print:max-w-full print:px-0.5 print:pb-1 print:pt-0">
         {children}
       </div>
     </div>

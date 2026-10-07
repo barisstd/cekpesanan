@@ -1,11 +1,11 @@
 export function ReceiptPrintHeader() {
   return (
-    <div className="mb-3 hidden text-center print:block">
-      <p className="font-display text-xl font-bold tracking-wide text-ink">
+    <div className="mb-2 hidden text-center print:block">
+      <p className="font-display text-sm font-bold tracking-wide text-ink">
         JASTIP IJUN
       </p>
-      <p className="text-xs text-ink/60">- Baby &amp; Kids Bookshop -</p>
-      <div className="mx-auto mt-2 w-full max-w-[220px] border-t border-dashed border-ink/30" />
+      <p className="text-[9px] text-ink/60">- Baby &amp; Kids Bookshop -</p>
+      <div className="mx-auto mt-1.5 w-full max-w-[140px] border-t border-dashed border-ink/30" />
     </div>
   );
 }

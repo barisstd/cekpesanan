@@ -11,7 +11,7 @@ export function PaymentStatusBadge({ status }: { status: PaymentStatus }) {
   return (
     <span
       className={[
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold",
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold print:gap-1 print:px-2 print:py-0.5 print:text-[10px]",
         style.bg,
         style.text,
       ].join(" ")}
